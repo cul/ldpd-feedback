@@ -52,7 +52,7 @@ namespace :deploy do
   task :symlink_shared do
     run "ln -nfs #{deploy_to}shared/database.yml #{release_path}/config/database.yml"
     run "ln -nfs #{deploy_to}shared/secrets.yml #{release_path}/config/secrets.yml"
-    run "ln -nfs #{deploy_to}shared/forms.yml #{release_path}/config/forms.yml"
+    run "ln -nfs #{deploy_to}shared/feedback_config.yml #{release_path}/config/feedback_config.yml"
 
     run "mkdir -p #{release_path}/db"
     run "ln -nfs #{deploy_to}shared/#{rails_env}.sqlite3 #{release_path}/db/#{rails_env}.sqlite3"
