@@ -1,0 +1,17 @@
+#feedback-form, #submission-success-form {
+  h1 {
+    font-size:20px;
+    margin:1em 0;
+  }
+}
+
+#feedback-form {
+  #errors {
+    padding:.5em .75em;
+
+    ul {
+      padding-left: 0px;
+      list-style:inside;
+    }
+  }
+}

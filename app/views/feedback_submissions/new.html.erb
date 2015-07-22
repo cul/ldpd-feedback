@@ -1,0 +1,34 @@
+<style>
+  body {
+    <%= @feedback_submission.form_config['text_color'].present? ? "color: #{@feedback_submission.form_config['text_color']};".html_safe : '' %>
+    <%= @feedback_submission.form_config['bg_color'].present? ? "background-color: #{@feedback_submission.form_config['bg_color']};".html_safe : '' %>
+  }
+</style>
+
+<h1><%= @feedback_submission.form_config['form_title'] %></h1>
+
+<%= form_tag({controller: 'feedback_submissions', action: 'create', id: @feedback_submission.feedback_key}, method: 'post') do %>
+  <div class="form-group">
+    <% if @feedback_submission.form_config['feedback_types'].present? %>
+      <%= select_tag 'feedback_type', options_for_select({'Report a problem' => 1, 'Suggest an improvement' => 4, 'Ask a question' => 18}, params[:feedback_type]), class: 'form-control input-sm' %>
+    <% end %>
+  </div>
+  <div class="form-group">
+    <%= text_field_tag(:one_line_summary, params[:one_line_summary], class: 'form-control input-sm', placeholder: 'One line summary') %>
+  </div>
+  <div class="form-group">
+    <%= text_area_tag(:description, params[:description], class: 'form-control input-sm', placeholder: 'Description', rows: '3') %>
+  </div>
+  <div class="form-group">
+    <%= text_field_tag(:name, params[:name], class: 'form-control input-sm', placeholder: 'Name (optional)') %>
+  </div>
+  <div class="form-group">
+    <%= text_field_tag(:email, params[:email], class: 'form-control input-sm', placeholder: 'Email (optional)') %>
+  </div>
+  
+  <div class="actions">
+    <%= submit_tag('Submit', :class => 'btn btn-default btn-sm pull-right') %>
+  </div>
+
+  
+<% end %>

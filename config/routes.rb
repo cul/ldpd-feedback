@@ -1,9 +1,14 @@
 Rails.application.routes.draw do
+  
+  get 'feedback_submission/:id', to: 'feedback_submissions#new', as: 'new_feedback_submission'
+  post 'feedback_submission/:id', to: 'feedback_submissions#create'
+  get 'feedback_submission/:id/success', to: 'feedback_submissions#success', as: 'success_feedback_submission'
+
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
   # You can have the root of your site routed with "root"
-  # root 'welcome#index'
+  root 'feedback_submissions#index'
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'
