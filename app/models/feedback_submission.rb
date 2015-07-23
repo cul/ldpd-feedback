@@ -70,6 +70,8 @@ class FeedbackSubmission
       environment_message
     
     MyMailer.send_mail(mail_to, mail_from, mail_subject, mail_message)
+    puts '--> sent message:'
+    puts mail_message
   end
   
   private
