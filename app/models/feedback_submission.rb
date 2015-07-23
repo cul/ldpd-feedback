@@ -36,7 +36,7 @@ class FeedbackSubmission
     
     begin
       client = JIRA::Client.new({
-        :site => jira_config['jira_url'] + 'z',
+        :site => jira_config['jira_url'],
         :context_path => '/',
         :username => jira_config['username'],
         :password => jira_config['password'],
