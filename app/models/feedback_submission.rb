@@ -65,15 +65,12 @@ class FeedbackSubmission
     mail_to = @form_config['target']['email']['to']
     mail_from = 'do-not-reply@feedback.cul.columbia.edu'
     mail_subject = @form_config['target']['email']['subject']
-    mail_message = 'A used has submitted feedback:' + "\n\n" +
+    mail_message = 'A user has submitted feedback:' + "\n\n" +
       'Feedback Type: ' + @form_config['feedback_types'].key(self.feedback_type) + "\n" +
       'One Line Summary: ' + self.one_line_summary + "\n" +
       'Description: ' + self.description + "\n" +
       environment_message
-    
-    puts 'sending:'
-    puts mail_message
-    
+      
     MyMailer.send_mail(mail_to, mail_from, mail_subject, mail_message).deliver
   end
   
@@ -87,6 +84,7 @@ class FeedbackSubmission
       'Window Width: ' + (self.window_width || '-') + "\n" +
       'Window Height: ' + (self.window_height || '-') + "\n" +
       'User Agent : ' + (self.user_agent || '-') + "\n"
+      'Submitted On : ' + (Time.now.to_s) + "\n"
     )
   end
   
