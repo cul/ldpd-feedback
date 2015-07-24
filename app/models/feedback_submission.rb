@@ -74,7 +74,7 @@ class FeedbackSubmission
     puts 'sending:'
     puts mail_message
     
-    MyMailer.send_mail(mail_to, mail_from, mail_subject, mail_message)
+    MyMailer.send_mail(mail_to, mail_from, mail_subject, mail_message).deliver
   end
   
   private
