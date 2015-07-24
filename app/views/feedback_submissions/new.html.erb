@@ -10,8 +10,8 @@
 <% if @feedback_submission.errors.present? %>
   <div id="errors" class="alert alert-danger">
     <ul>
-      <% @feedback_submission.errors.each do |error_message| %>
-        <li><%= error_message %></li>
+      <% @feedback_submission.errors.each do |attribute, error| %>
+        <li><%= error %></li>
       <% end %>
     </ul>
   </div>

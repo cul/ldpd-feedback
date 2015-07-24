@@ -56,8 +56,8 @@ class FeedbackSubmission
           'project' => { 'key' => jira_config['project'] }
         }
       })
-    rescue
-      @errors.add(:jira, 'Unable to connect to JIRA')
+    rescue Exception => e
+      @errors.add(:jira, 'Unable to connect to JIRA: ' + e.to_s + ' -> ' + e.message)
     end
   end
 
