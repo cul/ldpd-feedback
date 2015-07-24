@@ -1,8 +1,14 @@
 class MyMailer < ActionMailer::Base
 
   def send_mail(m_to, m_from, m_subject, m_body)
-    @email_body = m_body
-    mail(:to => m_to, :subject => m_subject, :from => m_from)
+    mail(
+      :to => m_to,
+      :from => m_from,
+      :subject => m_subject,
+      # Specify :body and :content_type params to send basic emails without a template
+      :content_type => "text/html",
+      :body => m_body,
+    )
   end
 
 end
