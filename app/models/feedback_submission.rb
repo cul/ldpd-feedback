@@ -3,22 +3,25 @@ require 'jira'
 class FeedbackSubmission
   
   include ActiveModel::Validations
-
-  JIRA_BUG_CODE = 1
-  JIRA_IMPROVEMENT_CODE = 4
-  JIRA_QUESTION_COMMENT_CODE = 18
   
-  attr_reader :feedback_key, :form_config
-  attr_accessor :feedback_type, :one_line_summary, :description, :name, :email, :submitted_from_page, :window_width, :window_height, :user_agent
+  attr_reader :feedback_key, :form_config, :feedback_type
+  attr_accessor :one_line_summary, :description, :name, :email, :submitted_from_page, :window_width, :window_height, :user_agent
+  
+  validates_presence_of :feedback_key, :one_line_summary, :description
+  validates :email, format: { with: /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i, message: 'Invalid email format' }
 
   def initialize(feedback_key)
     @feedback_key = feedback_key
     @form_config = FEEDBACK_CONFIG[@feedback_key]
   end
   
+  def feedback_type=(val)
+    @feedback_type = val.to_i
+  end
+  
   def update(feedback_submission_params)
     feedback_submission_params.each do |key, value|
-      self.instance_variable_set('@'+key, value)
+      self.send(key+'=', value)
     end
   end
   
@@ -28,7 +31,7 @@ class FeedbackSubmission
       self.submit_to_jira if @form_config.has_key?('target') && @form_config['target'].has_key?('jira')
       self.submit_as_email if @form_config.has_key?('target') && @form_config['target'].has_key?('email')
       
-      return @errors.present?
+      return @errors.blank?
   end
 
   def submit_to_jira
@@ -59,19 +62,19 @@ class FeedbackSubmission
   end
 
   def submit_as_email
-    
     mail_to = @form_config['target']['email']['to']
     mail_from = 'do-not-reply@feedback.cul.columbia.edu'
     mail_subject = @form_config['target']['email']['subject']
     mail_message = 'A used has submitted feedback:' + "\n\n" +
-      'Feedback Type: ' + self.feedback_type + "\n" +
+      'Feedback Type: ' + @form_config['feedback_types'].key(self.feedback_type) + "\n" +
       'One Line Summary: ' + self.one_line_summary + "\n" +
       'Description: ' + self.description + "\n" +
       environment_message
     
-    MyMailer.send_mail(mail_to, mail_from, mail_subject, mail_message)
-    puts '--> sent message:'
+    puts 'sending:'
     puts mail_message
+    
+    MyMailer.send_mail(mail_to, mail_from, mail_subject, mail_message)
   end
   
   private
