@@ -20,7 +20,7 @@ class FeedbackSubmissionsController < ApplicationController
         format.html { redirect_to success_feedback_submission_path(@feedback_submission.feedback_key), notice: 'Feedback submission was successfully created.' }
         format.json { render json: {success: true} }
       else
-        format.html { render :new } # Errors will be displayed in view
+        format.html { render :new } # Errors will be displayed in the view
         format.json { render json: @feedback_submission.errors, status: :unprocessable_entity }
       end
     end

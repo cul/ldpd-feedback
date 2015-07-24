@@ -6,7 +6,7 @@ class MyMailer < ActionMailer::Base
       :from => m_from,
       :subject => m_subject,
       # Specify :body and :content_type params to send basic emails without a template
-      :content_type => "text/html",
+      :content_type => "text/plain",
       :body => m_body,
     )
   end
