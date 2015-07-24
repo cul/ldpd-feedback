@@ -83,7 +83,7 @@ class FeedbackSubmission
       'Submitted From Page: ' + (self.submitted_from_page || '-') + "\n" +
       'Window Width: ' + (self.window_width || '-') + "\n" +
       'Window Height: ' + (self.window_height || '-') + "\n" +
-      'User Agent : ' + (self.user_agent || '-') + "\n"
+      'User Agent : ' + (self.user_agent || '-') + "\n" +
       'Submitted On : ' + (Time.now.to_s) + "\n"
     )
   end
