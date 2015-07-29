@@ -18,6 +18,11 @@
 <% end %>
 
 <%= form_tag({controller: 'feedback_submissions', action: 'create', id: @feedback_submission.feedback_key}, method: 'post') do %>
+
+  <%= hidden_field_tag 'submitted_from_page', params[:submitted_from_page] %>
+  <%= hidden_field_tag 'window_width', params[:window_width] %>
+  <%= hidden_field_tag 'window_height', params[:window_height] %>
+
   <div class="form-group">
     <% if @feedback_submission.form_config['feedback_types'].present? %>
       <%= select_tag 'feedback_type', options_for_select(@feedback_submission.form_config['feedback_types'], params[:feedback_type]), class: 'form-control input-sm' %>
