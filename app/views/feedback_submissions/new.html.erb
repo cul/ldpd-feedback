@@ -5,40 +5,49 @@
   }
 </style>
 
-<h1><%= @feedback_submission.form_config['form_title'] %></h1>
+<%= form_tag({controller: 'feedback_submissions', action: 'create', id: @feedback_submission.feedback_key}, method: 'post', id: 'feedback-form') do %>
 
-<% if @feedback_submission.errors.present? %>
-  <div id="errors" class="alert alert-danger">
-    <ul>
-      <% @feedback_submission.errors.each do |attribute, error| %>
-        <li><%= error %></li>
+  <h1><%= @feedback_submission.form_config['form_title'] %></h1>
+  
+  <% if @feedback_submission.errors.present? %>
+    <div id="errors" class="alert alert-danger">
+      Please review your submission for errors.
+      <% top_display_errors = @feedback_submission.errors.select {|attribute, message| [:feedback_type, :one_line_summary, :description, :name, :email].exclude?(attribute) } %>
+      <% if top_display_errors.present? %>
+        <ul>
+          <% top_display_errors.each do |attribute, error| %>
+            <li><%= error %></li>
+          <% end %>
+        </ul>
       <% end %>
-    </ul>
-  </div>
-<% end %>
-
-<%= form_tag({controller: 'feedback_submissions', action: 'create', id: @feedback_submission.feedback_key}, method: 'post') do %>
+    </div>
+  <% end %>
 
   <%= hidden_field_tag 'submitted_from_page', params[:submitted_from_page] %>
   <%= hidden_field_tag 'window_width', params[:window_width] %>
   <%= hidden_field_tag 'window_height', params[:window_height] %>
 
-  <div class="form-group">
+  <div class="form-group <%= 'has-error' if @feedback_submission.errors.include?(:feedback_type) %>"">
     <% if @feedback_submission.form_config['feedback_types'].present? %>
       <%= select_tag 'feedback_type', options_for_select(@feedback_submission.form_config['feedback_types'], params[:feedback_type]), class: 'form-control input-sm' %>
     <% end %>
+    <%= render_error_messages_if_present(@feedback_submission, :feedback_type) %>
   </div>
-  <div class="form-group">
+  <div class="form-group <%= 'has-error' if @feedback_submission.errors.include?(:one_line_summary) %>"">
     <%= text_field_tag(:one_line_summary, params[:one_line_summary], class: 'form-control input-sm', placeholder: 'One line summary') %>
+    <%= render_error_messages_if_present(@feedback_submission, :one_line_summary) %>
   </div>
-  <div class="form-group">
+  <div class="form-group <%= 'has-error' if @feedback_submission.errors.include?(:description) %>"">
     <%= text_area_tag(:description, params[:description], class: 'form-control input-sm', placeholder: 'Description', rows: '3') %>
+    <%= render_error_messages_if_present(@feedback_submission, :description) %>
   </div>
-  <div class="form-group">
+  <div class="form-group <%= 'has-error' if @feedback_submission.errors.include?(:name) %>"">
     <%= text_field_tag(:name, params[:name], class: 'form-control input-sm', placeholder: 'Name (optional)') %>
+    <%= render_error_messages_if_present(@feedback_submission, :name) %>
   </div>
-  <div class="form-group">
+  <div class="form-group <%= 'has-error' if @feedback_submission.errors.include?(:email) %>">
     <%= text_field_tag(:email, params[:email], class: 'form-control input-sm', placeholder: 'Email (optional)') %>
+    <%= render_error_messages_if_present(@feedback_submission, :email) %>
   </div>
   
   <div class="actions">

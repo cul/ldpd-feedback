@@ -7,8 +7,27 @@ class FeedbackSubmission
   attr_reader :feedback_key, :form_config, :feedback_type
   attr_accessor :one_line_summary, :description, :name, :email, :submitted_from_page, :window_width, :window_height, :user_agent
   
-  validates_presence_of :feedback_key, :one_line_summary, :description
-  validates :email, format: { with: /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i, message: 'Invalid email format' }
+  validate :is_valid_feedback_type
+  
+  validates_presence_of :feedback_key, message: 'A feedback key must be specified in the URL.'
+  validates_presence_of :feedback_type, message: 'A feedback type is required.'
+  validates             :feedback_type, numericality: { message: 'Feedback type value must be numeric.' }
+  
+  validates_presence_of :one_line_summary, message: 'A one line summary is required.'
+  validates_length_of   :one_line_summary, maximum: 150, message: 'Too many characters (150 max).'
+  
+  validates_presence_of :description, message: 'A description is required.'
+  validates_length_of   :description, maximum: 500, message: 'Too many characters (500 max).'
+  
+  validates_length_of :name, maximum: 100, message: 'Too many characters (100 max).'
+  
+  validates           :email, format: { with: /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i, message: 'Invalid email format.' }
+  validates_length_of :email, maximum: 100, message: 'Too many characters (100 max).'
+  
+  validates_length_of :user_agent, maximum: 300, message: 'User Agent is too long.' # A user agent shouldn't ever be this long, but we don't want people messing with headers and sending crazy long user agent strings.
+  
+  validates :submitted_from_page, allow_blank: true, length: {maximum: 2000 , message: 'Submission URL is too long.' } # A submission URL shouldn't ever be this long, but we need some limit for pages with complex query string params.
+  validates :window_width, :window_height, allow_blank: true, numericality: { message: 'Window width/height must be numeric.'} #:window_height
 
   def initialize(feedback_key)
     @feedback_key = feedback_key
@@ -17,6 +36,12 @@ class FeedbackSubmission
   
   def feedback_type=(val)
     @feedback_type = val.to_i
+  end
+  
+  def is_valid_feedback_type
+    unless @form_config['feedback_types'].has_value?(self.feedback_type)
+      errors.add(:feedback_type, 'Invalid feedback type.')
+    end
   end
   
   def update(feedback_submission_params)
@@ -57,7 +82,8 @@ class FeedbackSubmission
         }
       })
     rescue Exception => e
-      @errors.add(:jira, 'Unable to connect to JIRA: ' + e.to_s + ' -> ' + e.message)
+      @errors.add(:jira, 'Unable to connect to the ticket submission system.')
+      Rails.logger.error('Unable to connect to JIRA: ' + e.to_s + ' -> ' + e.message)
     end
   end
 
