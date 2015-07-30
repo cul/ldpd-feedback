@@ -9,17 +9,22 @@
 
   <h1><%= @feedback_submission.form_config['form_title'] %></h1>
   
-  <% if @feedback_submission.errors.present? %>
-    <div id="errors" class="alert alert-danger">
-      Please review your submission for errors.
-      <% top_display_errors = @feedback_submission.errors.select {|attribute, message| [:feedback_type, :one_line_summary, :description, :name, :email].exclude?(attribute) } %>
-      <% if top_display_errors.present? %>
-        <ul>
-          <% top_display_errors.each do |attribute, error| %>
-            <li><%= error %></li>
-          <% end %>
-        </ul>
+  <% top_display_errors = @feedback_submission.errors.select {|attribute, message| [:feedback_type, :one_line_summary, :description, :name, :email].exclude?(attribute) } %>
+  <% inline_form_display_errors = @feedback_submission.errors.select {|attribute, message| [:feedback_type, :one_line_summary, :description, :name, :email].include?(attribute) } %>
+  
+  <% if top_display_errors.present? %>
+    <div class="alert alert-danger">
+    <ul>
+      <% top_display_errors.each do |attribute, error| %>
+        <li><%= error %></li>
       <% end %>
+    </ul>
+    </div>
+  <% end %>
+  
+  <% if inline_form_display_errors.present? %>
+    <div class="alert alert-danger">
+      Please review your submission for errors.
     </div>
   <% end %>
 
