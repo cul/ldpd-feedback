@@ -92,9 +92,9 @@ class FeedbackSubmission
     mail_from = 'do-not-reply@feedback.cul.columbia.edu'
     mail_subject = @form_config['target']['email']['subject']
     mail_message = 'A user has submitted feedback:' + "\n\n" +
-      'Feedback Type: ' + @form_config['feedback_types'].key(self.feedback_type) + "\n" +
-      'One Line Summary: ' + self.one_line_summary + "\n" +
-      'Description: ' + self.description + "\n" +
+      'Feedback Type: ' + @form_config['feedback_types'].key(self.feedback_type) + "\n\n" +
+      'One Line Summary: ' + self.one_line_summary + "\n\n" +
+      'Description: ' + self.description + "\n\n" +
       environment_message
       
     MyMailer.send_mail(mail_to, mail_from, mail_subject, mail_message).deliver
@@ -104,12 +104,12 @@ class FeedbackSubmission
   
   def environment_message
     return (
-      'Reporter Name: ' + (self.name || '-') + "\n" +
-      'Reporter Email: ' + (self.email || '-') + "\n" +
-      'Submitted From Page: ' + (self.submitted_from_page || '-') + "\n" +
-      'Window Width: ' + (self.window_width || '-') + "\n" +
-      'Window Height: ' + (self.window_height || '-') + "\n" +
-      'User Agent : ' + (self.user_agent || '-') + "\n" +
+      'Reporter Name: ' + (self.name || '-') + "\n\n" +
+      'Reporter Email: ' + (self.email || '-') + "\n\n" +
+      'Submitted From Page: ' + (self.submitted_from_page || '-') + "\n\n" +
+      'Window Width: ' + (self.window_width || '-') + "\n\n" +
+      'Window Height: ' + (self.window_height || '-') + "\n\n" +
+      'User Agent : ' + (self.user_agent || '-') + "\n\n" +
       'Submitted On : ' + (Time.now.to_s) + "\n"
     )
   end
