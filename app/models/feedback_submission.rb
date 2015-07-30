@@ -83,7 +83,7 @@ class FeedbackSubmission
       })
     rescue Exception => e
       @errors.add(:jira, 'Unable to connect to the ticket submission system.')
-      Rails.logger.error('Unable to connect to JIRA: ' + e.to_s + ' -> ' + e.message)
+      Rails.logger.error('Unable to connect to JIRA: ' + e.to_s + ' -> ' + e.message + "\n\n" + e.backtrace.join("\n"))
     end
   end
 
@@ -104,12 +104,12 @@ class FeedbackSubmission
   
   def environment_message
     return (
-      'Reporter Name: ' + (self.name || '-') + "\n\n" +
-      'Reporter Email: ' + (self.email || '-') + "\n\n" +
-      'Submitted From Page: ' + (self.submitted_from_page || '-') + "\n\n" +
-      'Window Width: ' + (self.window_width || '-') + "\n\n" +
-      'Window Height: ' + (self.window_height || '-') + "\n\n" +
-      'User Agent : ' + (self.user_agent || '-') + "\n\n" +
+      'Reporter Name: ' + (self.name.blank? ? '-' : self.name) + "\n\n" +
+      'Reporter Email: ' + (self.email.blank? ? '-' : self.email) + "\n\n" +
+      'Submitted From Page: ' + (self.submitted_from_page.blank? ? '-' : self.submitted_from_page) + "\n\n" +
+      'Window Width: ' + (self.window_width.blank? ? '-' : self.window_width) + "\n\n" +
+      'Window Height: ' + (self.window_height.blank? ? '-' : self.window_height) + "\n\n" +
+      'User Agent : ' + (self.user_agent.blank? ? '-' : self.user_agent) + "\n\n" +
       'Submitted On : ' + (Time.now.to_s) + "\n"
     )
   end
