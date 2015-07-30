@@ -1,6 +1,6 @@
 class FeedbackSubmissionsController < ApplicationController
   before_action :set_feedback_submission, only: [:new, :create, :success]
-  after_action :allow_iframe, only: :new, :create, :success # Allow these actions to be loaded in an iframe
+  after_action :allow_iframe, only: [:new, :create, :success] # Allow these actions to be loaded in an iframe
 
   # GET /feedback_submissions
   # GET /feedback_submissions.json
