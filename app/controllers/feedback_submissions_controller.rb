@@ -1,5 +1,6 @@
 class FeedbackSubmissionsController < ApplicationController
   before_action :set_feedback_submission, only: [:new, :create, :success]
+  after_action :allow_iframe, only: :new, :create, :success # Allow these actions to be loaded in an iframe
 
   # GET /feedback_submissions
   # GET /feedback_submissions.json
@@ -30,6 +31,7 @@ class FeedbackSubmissionsController < ApplicationController
   end
 
   private
+  
   # Use callbacks to share common setup or constraints between actions.
   def set_feedback_submission
     raise ActionController::RoutingError.new('Not Found') unless FEEDBACK_CONFIG.has_key?(params[:id])
@@ -40,4 +42,9 @@ class FeedbackSubmissionsController < ApplicationController
   def feedback_submission_params
     params.permit(:feedback_type, :one_line_summary, :description, :name, :email, :submitted_from_page, :window_width, :window_height)
   end
+  
+  def allow_iframe
+    response.headers.except! 'X-Frame-Options'
+  end
+  
 end
