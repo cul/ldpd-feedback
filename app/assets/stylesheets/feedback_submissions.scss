@@ -5,8 +5,15 @@
   }
   
   .submitted-from-page-alert {
-    word-wrap: break-word;
-    word-break: break-all;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  
+  .submitted-from-page-alert:hover {
+    white-space: normal;
+    overflow: auto;
+    text-overflow: clip;
   }
   
   .alert {
