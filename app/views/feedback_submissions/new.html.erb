@@ -12,6 +12,11 @@
   <% top_display_errors = @feedback_submission.errors.select {|attribute, message| [:feedback_type, :one_line_summary, :description, :name, :email].exclude?(attribute) } %>
   <% inline_form_display_errors = @feedback_submission.errors.select {|attribute, message| [:feedback_type, :one_line_summary, :description, :name, :email].include?(attribute) } %>
   
+  
+  <% if params[:submitted_from_page].present? %>
+    <div class="alert alert-info">Submitted from: <%= params[:submitted_from_page] %></div>
+  <% end %>
+  
   <% if top_display_errors.present? %>
     <div class="alert alert-danger">
     <ul>
