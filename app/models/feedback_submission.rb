@@ -17,7 +17,7 @@ class FeedbackSubmission
   validates_length_of   :one_line_summary, maximum: 150, message: 'Too many characters (150 max).'
   
   validates_presence_of :description, message: 'A description is required.'
-  validates_length_of   :description, maximum: 500, message: 'Too many characters (500 max).'
+  validates_length_of   :description, maximum: 2000, message: 'Too many characters (2000 max).'
   
   validates_length_of :name, maximum: 100, message: 'Too many characters (100 max).'
   
