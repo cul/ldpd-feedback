@@ -21,7 +21,7 @@ class FeedbackSubmission
   
   validates_length_of :name, maximum: 100, message: 'Too many characters (100 max).'
   
-  validates           :email, format: { with: /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i, message: 'Invalid email format.' }
+  validates           :email, allow_blank: true, format: { with: /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i, message: 'Invalid email format.' }
   validates_length_of :email, maximum: 100, message: 'Too many characters (100 max).'
   
   validates_length_of :user_agent, maximum: 300, message: 'User Agent is too long.' # A user agent shouldn't ever be this long, but we don't want people messing with headers and sending crazy long user agent strings.
