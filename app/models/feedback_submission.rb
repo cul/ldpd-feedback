@@ -89,7 +89,7 @@ class FeedbackSubmission
 
   def submit_as_email
     mail_to = @form_config['target']['email']['to']
-    mail_from = 'do-not-reply@feedback.cul.columbia.edu'
+    mail_from = 'do-not-reply@library.columbia.edu'
     mail_subject = @form_config['target']['email']['subject']
     mail_message = 'A user has submitted feedback:' + "\n\n" +
       'Feedback Type: ' + @form_config['feedback_types'].key(self.feedback_type) + "\n\n" +
