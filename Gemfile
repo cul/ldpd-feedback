@@ -6,7 +6,7 @@ gem 'rails', '4.2.1'
 # Use sqlite3 as the database for Active Record
 gem 'sqlite3'
 # Use mysql2 gem for mysql connections
-gem 'mysql2', '0.3.13'
+gem 'mysql2', '0.3.18'
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 5.0'
 # Use Uglifier as compressor for JavaScript assets
@@ -35,13 +35,18 @@ gem 'unicorn'
 
 gem 'jira-ruby'
 
-group :development, :test do
-  # Call 'debugger' anywhere in the code to stop execution and get a debugger console
-  # Note: debugger doesn't currently work with Ruby 2.0
-  #gem 'debugger'
-
-  gem 'capistrano', '~> 2.12.0'
-
+# Use Capistrano for deployment
+group :development do
+  gem 'capistrano', '~> 3.4.0', require: false
+  # Rails and Bundler integrations were moved out from Capistrano 3
+  gem 'capistrano-rails', '~> 1.1', require: false
+  gem 'capistrano-bundler', '~> 1.1', require: false
+  # "idiomatic support for your preferred ruby version manager"
+  gem 'capistrano-rvm', '~> 0.1', require: false
+  # The `deploy:restart` hook for passenger applications is now in a separate gem
+  # Just add it to your Gemfile and require it in your Capfile.
+  gem 'capistrano-passenger', '~> 0.1', require: false
+  
   # Access an IRB console on exception pages or by using <%= console %> in views
   gem 'web-console', '~> 2.0'
 
