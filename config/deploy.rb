@@ -5,7 +5,8 @@ set :application, 'feedback'
 set :repo_url, 'git@github.com:cul/feedback.git'
 
 # Default branch is :master
-ask :branch, `git rev-parse --abbrev-ref HEAD`.chomp
+#ask :branch, `git rev-parse --abbrev-ref HEAD`.chomp # Current branch is suggested by default
+ask :branch, proc { `git tag`.split("\n").last } # Latest tag is suggested by default
 
 # Default deploy_to directory is /var/www/my_app_name
 # set :deploy_to, '/var/www/my_app_name'
@@ -51,6 +52,15 @@ set :passenger_restart_with_touch, true
 
 
 namespace :deploy do
+  
+  desc "Add tag based on current version"
+  task :auto_tag do
+    current_version_and_time_tag = IO.read("VERSION").to_s.strip + Date.today.strftime("-%y%m%d")
+    tag = ask(:'tag', current_version_and_time_tag)
+    tag = fetch(:tag)
+
+    system("git tag -a #{tag} -m 'auto-tagged' && git push origin --tags")
+  end
 
   after :restart, :clear_cache do
     on roles(:web), in: :groups, limit: 3, wait: 10 do
