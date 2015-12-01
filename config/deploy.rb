@@ -6,7 +6,7 @@ set :repo_url, 'git@github.com:cul/feedback.git'
 
 # Default branch is :master
 #ask :branch, `git rev-parse --abbrev-ref HEAD`.chomp # Current branch is suggested by default
-ask :branch, proc { `git tag`.split("\n").last } # Latest tag is suggested by default
+ask :branch, proc { `git tag --sort=version:refname`.split("\n").last } # Latest tag is suggested by default
 
 # Default deploy_to directory is /var/www/my_app_name
 # set :deploy_to, '/var/www/my_app_name'
@@ -55,7 +55,7 @@ namespace :deploy do
   
   desc "Add tag based on current version"
   task :auto_tag do
-    current_version_and_yyymmd_tag = IO.read("VERSION").to_s.strip + Date.today.strftime("-%y%m%d")
+    current_version_and_yyymmd_tag = "v" + IO.read("VERSION").to_s.strip + "/" + Date.today.strftime("%Y%m%d")
     tag = ask(:'tag', current_version_and_yyymmd_tag)
     tag = fetch(:tag)
 
