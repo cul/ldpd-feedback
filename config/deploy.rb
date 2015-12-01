@@ -55,8 +55,8 @@ namespace :deploy do
   
   desc "Add tag based on current version"
   task :auto_tag do
-    current_version_and_time_tag = IO.read("VERSION").to_s.strip + Date.today.strftime("-%y%m%d")
-    tag = ask(:'tag', current_version_and_time_tag)
+    current_version_and_yyymmd_tag = IO.read("VERSION").to_s.strip + Date.today.strftime("-%y%m%d")
+    tag = ask(:'tag', current_version_and_yyymmd_tag)
     tag = fetch(:tag)
 
     system("git tag -a #{tag} -m 'auto-tagged' && git push origin --tags")
