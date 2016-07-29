@@ -72,7 +72,7 @@ class FeedbackSubmission
       })
       
       issue = client.Issue.build
-      issue.save({
+      result = issue.save({
         'fields' => {
           'issuetype' => { 'id' => self.feedback_type },
           'summary' => self.one_line_summary,
@@ -81,6 +81,12 @@ class FeedbackSubmission
           'project' => { 'key' => jira_config['project'] }
         }
       })
+      
+      unless result
+        @errors.add(:jira, 'An unexpected error occurred while submitting your feedback.')
+        Rails.logger.error("One or more errors encountered during issue submission for project #{jira_config['project']}: #{issue.errors.inspect}")
+      end
+      
     rescue Exception => e
       @errors.add(:jira, 'Unable to connect to the ticket submission system.')
       Rails.logger.error('Unable to connect to JIRA: ' + e.to_s + ' -> ' + e.message + "\n\n" + e.backtrace.join("\n"))
