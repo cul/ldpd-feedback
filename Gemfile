@@ -2,7 +2,7 @@ source 'https://rubygems.org'
 
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '4.2.1'
+gem 'rails', '4.2.7.1'
 # Use sqlite3 as the database for Active Record
 gem 'sqlite3'
 # Use mysql2 gem for mysql connections
@@ -34,6 +34,8 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 gem 'unicorn'
 
 gem 'jira-ruby'
+
+gem 'nokogiri', '~> 1.8.1'
 
 # Use Capistrano for deployment
 group :development do
