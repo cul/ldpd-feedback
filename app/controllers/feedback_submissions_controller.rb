@@ -17,7 +17,7 @@ class FeedbackSubmissionsController < ApplicationController
     @feedback_submission.update(feedback_submission_params.merge('user_agent' => request.user_agent))
 
     respond_to do |format|
-      if @feedback_submission.submit
+      if verify_recaptcha(model: @feedback_submission) && @feedback_submission.submit
         format.html { redirect_to success_feedback_submission_path(@feedback_submission.feedback_key), notice: 'Feedback submission was successfully created.' }
         format.json { render json: {success: true} }
       else
@@ -26,12 +26,12 @@ class FeedbackSubmissionsController < ApplicationController
       end
     end
   end
-  
+
   def success
   end
 
   private
-  
+
   # Use callbacks to share common setup or constraints between actions.
   def set_feedback_submission
     raise ActionController::RoutingError.new('Not Found') unless FEEDBACK_CONFIG.has_key?(params[:id])
@@ -42,9 +42,9 @@ class FeedbackSubmissionsController < ApplicationController
   def feedback_submission_params
     params.permit(:feedback_type, :one_line_summary, :description, :name, :email, :submitted_from_page, :window_width, :window_height)
   end
-  
+
   def allow_iframe
     response.headers.except! 'X-Frame-Options'
   end
-  
+
 end

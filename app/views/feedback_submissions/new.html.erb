@@ -6,17 +6,16 @@
 </style>
 
 <%= form_tag({controller: 'feedback_submissions', action: 'create', id: @feedback_submission.feedback_key}, method: 'post', id: 'feedback-form') do %>
-
   <h1><%= @feedback_submission.form_config['form_title'] %></h1>
-  
+
   <% top_display_errors = @feedback_submission.errors.select {|attribute, message| [:feedback_type, :one_line_summary, :description, :name, :email].exclude?(attribute) } %>
   <% inline_form_display_errors = @feedback_submission.errors.select {|attribute, message| [:feedback_type, :one_line_summary, :description, :name, :email].include?(attribute) } %>
-  
-  
+
+
   <% if params[:submitted_from_page].present? %>
     <div class="alert alert-info submitted-from-page-alert">Submitted from: <%= params[:submitted_from_page] %></div>
   <% end %>
-  
+
   <% if top_display_errors.present? %>
     <div class="alert alert-danger">
     <ul>
@@ -26,7 +25,7 @@
     </ul>
     </div>
   <% end %>
-  
+
   <% if inline_form_display_errors.present? %>
     <div class="alert alert-danger">
       Please review your submission for errors.
@@ -59,10 +58,10 @@
     <%= text_field_tag(:email, params[:email], class: 'form-control input-sm', placeholder: 'Email (optional)') %>
     <%= render_error_messages_if_present(@feedback_submission, :email) %>
   </div>
-  
+
+  <%= recaptcha_tags %>
+
   <div class="actions">
     <%= submit_tag('Submit', :class => 'btn btn-default btn-sm pull-right') %>
   </div>
-
-  
 <% end %>

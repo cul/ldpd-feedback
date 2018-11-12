@@ -2,7 +2,7 @@ source 'https://rubygems.org'
 
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '4.2.1'
+gem 'rails', '4.2.10'
 # Use sqlite3 as the database for Active Record
 gem 'sqlite3'
 # Use mysql2 gem for mysql connections
@@ -34,6 +34,9 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 gem 'unicorn'
 
 gem 'jira-ruby'
+gem 'recaptcha', '~> 4.13'
+
+gem 'nokogiri', '~> 1.8.1'
 
 # Use Capistrano for deployment
 group :development do
@@ -46,7 +49,7 @@ group :development do
   # The `deploy:restart` hook for passenger applications is now in a separate gem
   # Just add it to your Gemfile and require it in your Capfile.
   gem 'capistrano-passenger', '~> 0.1', require: false
-  
+
   # Access an IRB console on exception pages or by using <%= console %> in views
   gem 'web-console', '~> 2.0'
 
