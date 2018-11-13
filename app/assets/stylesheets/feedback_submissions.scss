@@ -1,35 +1,37 @@
 #feedback-form {
+  margin-bottom: 1em;
+
   h1 {
     font-size:1.5em;
     margin:1em 0;
   }
-  
+
   .submitted-from-page-alert {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
   }
-  
+
   .submitted-from-page-alert:hover {
     white-space: normal;
     overflow: auto;
     text-overflow: clip;
   }
-  
+
   .alert {
     padding:10px 15px;
   }
-  
+
   .alert.attached-above {
     border-top-left-radius: 0px;
     border-top-right-radius: 0px;
     font-size:.95em;
     padding:5px 10px;
   }
-  
+
   ul {
     padding-left: 0px;
     list-style:inside;
   }
-  
+
 }
