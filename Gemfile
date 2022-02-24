@@ -15,6 +15,8 @@ gem 'bootsnap', require: false
 gem 'sqlite3', '~> 1.4'
 # Use mysql2 gem for mysql connections
 gem 'mysql2'
+# or use a null adapter for scenarios that really require no database
+gem 'activerecord-nulldb-adapter'
 # Use Uglifier as compressor for JavaScript assets
 gem 'uglifier', '>= 1.3.0'
 
