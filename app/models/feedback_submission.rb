@@ -29,7 +29,11 @@ class FeedbackSubmission
   validates :submitted_from_page, allow_blank: true, length: {maximum: 2000 , message: 'Submission URL is too long.' } # A submission URL shouldn't ever be this long, but we need some limit for pages with complex query string params.
   validates :window_width, :window_height, allow_blank: true, numericality: { message: 'Window width/height must be numeric.'} #:window_height
 
-  def initialize(feedback_key)
+  def initialize(feedback_key = nil)
+    self.feedback_key = feedback_key
+  end
+
+  def feedback_key=(feedback_key)
     @feedback_key = feedback_key
     @form_config = FEEDBACK_CONFIG[@feedback_key]
   end
