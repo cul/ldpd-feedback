@@ -35,7 +35,7 @@ class FeedbackSubmission
 
   def feedback_key=(feedback_key)
     @feedback_key = feedback_key
-    @form_config = FEEDBACK_CONFIG[@feedback_key]
+    @form_config = FEEDBACK_CONFIG[@feedback_key] || {}
   end
 
   def feedback_type=(val)
@@ -63,19 +63,22 @@ class FeedbackSubmission
       return @errors.blank?
   end
 
+  def jira_issue(jira_config)
+    JIRA::Client.new({
+      site: jira_config['jira_url'],
+      context_path: '/',
+      username: jira_config['username'],
+      password: jira_config['password'],
+      auth_type: :basic
+    }).Issue.build
+  end
+
   def submit_to_jira
     jira_config = @form_config['target']['jira']
 
     begin
-      client = JIRA::Client.new({
-        :site => jira_config['jira_url'],
-        :context_path => '/',
-        :username => jira_config['username'],
-        :password => jira_config['password'],
-        :auth_type => :basic
-      })
+      issue = jira_issue(jira_config)
 
-      issue = client.Issue.build
       result = issue.save({
         'fields' => {
           'issuetype' => { 'id' => self.feedback_type },

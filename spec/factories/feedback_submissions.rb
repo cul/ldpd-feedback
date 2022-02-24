@@ -20,8 +20,20 @@ FactoryBot.define do
       user_agent { }
     end
 
+    trait :with_invalid_feedback_type do
+      feedback_type { 1001 }
+    end
+
     trait :missing_description do
       description { nil }
+    end
+
+    trait :with_jira do
+      feedback_key { 'with_jira' }
+    end
+
+    trait :with_email do
+      feedback_key { 'with_email' }
     end
   end
 end

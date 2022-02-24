@@ -11,7 +11,7 @@ require 'capybara/rspec'
 
 Capybara.javascript_driver = :selenium_chrome_headless
 Capybara.default_max_wait_time = 30 # Some ajax requests might take longer than the default wait time of 2 seconds.
-
+Capybara.enable_aria_label = true
 #webdriver = Selenium::WebDriver.for :selenium_chrome_headless
 #webdriver.capabilities[:unexpectedAlertBehaviour] = 'dismiss'
 
