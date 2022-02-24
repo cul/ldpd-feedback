@@ -125,7 +125,7 @@ GEM
     minitest (5.11.3)
     multi_json (1.13.1)
     multipart-post (2.0.0)
-    mysql2 (0.3.18)
+    mysql2 (0.5.3)
     net-scp (1.2.1)
       net-ssh (>= 2.6.5)
     net-ssh (5.0.2)
@@ -270,7 +270,7 @@ DEPENDENCIES
   jira-ruby
   jquery-rails
   libv8 (>= 3.16.14.7)
-  mysql2 (= 0.3.18)
+  mysql2
   nokogiri (~> 1.8.1)
   pry
   puma
