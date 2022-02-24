@@ -7,7 +7,7 @@ describe FeedbackSubmissionsHelper, type: :helper do
   before { feedback_submission.valid? }
 
   describe '#render_error_messages_if_present' do
-    context 'no errors are present' do
+    context 'no error key is present' do
       it 'returns blank output' do
         expect(message).to be_blank
       end

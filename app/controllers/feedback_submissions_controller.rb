@@ -22,7 +22,7 @@ class FeedbackSubmissionsController < ApplicationController
         format.json { render json: {success: true} }
       else
         format.html { render :new } # Errors will be displayed in the view
-        format.json { render json: @feedback_submission.errors, status: :unprocessable_entity }
+        format.json { render json: @feedback_submission.errors.to_json, status: :unprocessable_entity }
       end
     end
   end
