@@ -29,9 +29,13 @@ class FeedbackSubmission
   validates :submitted_from_page, allow_blank: true, length: {maximum: 2000 , message: 'Submission URL is too long.' } # A submission URL shouldn't ever be this long, but we need some limit for pages with complex query string params.
   validates :window_width, :window_height, allow_blank: true, numericality: { message: 'Window width/height must be numeric.'} #:window_height
 
-  def initialize(feedback_key)
+  def initialize(feedback_key = nil)
+    self.feedback_key = feedback_key
+  end
+
+  def feedback_key=(feedback_key)
     @feedback_key = feedback_key
-    @form_config = FEEDBACK_CONFIG[@feedback_key]
+    @form_config = FEEDBACK_CONFIG[@feedback_key] || {}
   end
 
   def feedback_type=(val)
@@ -59,19 +63,22 @@ class FeedbackSubmission
       return @errors.blank?
   end
 
+  def build_jira_issue(jira_config)
+    JIRA::Client.new({
+      site: jira_config['jira_url'],
+      context_path: '/',
+      username: jira_config['username'],
+      password: jira_config['password'],
+      auth_type: :basic
+    }).Issue.build
+  end
+
   def submit_to_jira
     jira_config = @form_config['target']['jira']
 
     begin
-      client = JIRA::Client.new({
-        :site => jira_config['jira_url'],
-        :context_path => '/',
-        :username => jira_config['username'],
-        :password => jira_config['password'],
-        :auth_type => :basic
-      })
+      issue = build_jira_issue(jira_config)
 
-      issue = client.Issue.build
       result = issue.save({
         'fields' => {
           'issuetype' => { 'id' => self.feedback_type },

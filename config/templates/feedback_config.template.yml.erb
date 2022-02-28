@@ -1,0 +1,38 @@
+all: &all
+  website:
+    form_title: 'Website Suggestions & Feedback'
+    text_color: '#112B7D'
+    bg_color: '#F8F8F8'
+    feedback_types:
+      'Suggest an improvement': 4
+      'Report an issue': 1
+      'Ask a question': 18
+    target: {}
+  with_jira:
+    form_title: 'Website Suggestions & Feedback'
+    text_color: '#112B7D'
+    bg_color: '#F8F8F8'
+    feedback_types:
+      'Suggest an improvement': 4
+      'Report an issue': 1
+      'Ask a question': 18
+    target:
+      jira:
+        jira_url: 'https://jira.example.org'
+        project: 'FEEDBACK'
+        username: 'jiraUser'
+        password: <%= SecureRandom.hex(32) %>
+  with_email:
+    form_title: 'Website Suggestions & Feedback'
+    text_color: '#112B7D'
+    bg_color: '#F8F8F8'
+    feedback_types:
+      'Suggest an improvement': 4
+      'Report an issue': 1
+      'Ask a question': 18
+    target:
+      email:
+        to: 'feedback@example.org'
+        subject: 'FEEDBACK'
+development: *all
+test: *all
