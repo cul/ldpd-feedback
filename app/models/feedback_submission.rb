@@ -63,7 +63,7 @@ class FeedbackSubmission
       return @errors.blank?
   end
 
-  def jira_issue(jira_config)
+  def build_jira_issue(jira_config)
     JIRA::Client.new({
       site: jira_config['jira_url'],
       context_path: '/',
@@ -77,7 +77,7 @@ class FeedbackSubmission
     jira_config = @form_config['target']['jira']
 
     begin
-      issue = jira_issue(jira_config)
+      issue = build_jira_issue(jira_config)
 
       result = issue.save({
         'fields' => {
