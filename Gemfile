@@ -11,8 +11,6 @@ gem 'sprockets-rails', :require => 'sprockets/railtie'
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', require: false
 
-# Use sqlite3 as the database for Active Record
-gem 'sqlite3', '~> 1.4'
 # Use mysql2 gem for mysql connections
 gem 'mysql2'
 # or use a null adapter for scenarios that really require no database
@@ -60,6 +58,8 @@ group :development do
 end
 
 group :development, :test do
+  # Use sqlite3 as the database for Active Record
+  gem 'sqlite3', '~> 1.4'
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
   # Adds support for Capybara system testing and selenium driver
