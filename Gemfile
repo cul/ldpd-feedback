@@ -53,6 +53,7 @@ group :development do
   # The `deploy:restart` hook for passenger applications is now in a separate gem
   # Just add it to your Gemfile and require it in your Capfile.
   gem 'capistrano-passenger', '~> 0.1', require: false
+  gem 'listen'
 
   # Access an IRB console on exception pages or by using <%= console %> in views
   gem 'web-console', '~> 2.0'

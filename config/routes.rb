@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  
+  # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
   get 'feedback_submission/:id', to: 'feedback_submissions#new', as: 'new_feedback_submission'
   post 'feedback_submission/:id', to: 'feedback_submissions#create'
   get 'feedback_submission/:id/success', to: 'feedback_submissions#success', as: 'success_feedback_submission'
