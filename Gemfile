@@ -20,10 +20,6 @@ gem 'uglifier', '>= 1.3.0'
 
 gem 'bootstrap-sass', '~> 3.3.4'
 
-# See https://github.com/sstephenson/execjs#readme for more supported runtimes
-gem 'therubyracer', '>= 0.12.1',  platforms: :ruby
-gem 'libv8', '>= 3.16.14.7' # Min version for compiling on Mac OS 10.10
-
 # Use jquery as the JavaScript library
 gem 'jquery-rails'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder

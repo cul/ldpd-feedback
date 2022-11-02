@@ -6,7 +6,9 @@
 </style>
 
 <%= form_tag({controller: 'feedback_submissions', action: 'create', id: @feedback_submission.feedback_key}, method: 'post', id: 'feedback-form') do %>
+  <% if @feedback_submission.form_config['form_title'].present? %>
   <h1><%= @feedback_submission.form_config['form_title'] %></h1>
+  <% end %>
 
   <% top_display_errors = @feedback_submission.errors.select {|attribute, message| [:feedback_type, :one_line_summary, :description, :name, :email].exclude?(attribute) } %>
   <% inline_form_display_errors = @feedback_submission.errors.select {|attribute, message| [:feedback_type, :one_line_summary, :description, :name, :email].include?(attribute) } %>
