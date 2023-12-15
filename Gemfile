@@ -33,20 +33,15 @@ gem 'puma'
 gem 'jira-ruby'
 gem 'recaptcha', '~> 4.13'
 
-gem 'nokogiri', '~> 1.10.10'
-gem 'mini_portile2', '~> 2.4.0'
+gem 'nokogiri', '~> 1.15.2'
 
 # Use Capistrano for deployment
 group :development do
-  gem 'capistrano', '~> 3.5.0', require: false
-  # Rails and Bundler integrations were moved out from Capistrano 3
-  gem 'capistrano-rails', '~> 1.1', require: false
+  gem 'capistrano', '~> 3.17.3', require: false
+  gem 'capistrano-rails', '~> 1.4', require: false
   gem 'capistrano-bundler', '~> 1.1', require: false
-  # "idiomatic support for your preferred ruby version manager"
   gem 'capistrano-rvm', '~> 0.1', require: false
-  # The `deploy:restart` hook for passenger applications is now in a separate gem
-  # Just add it to your Gemfile and require it in your Capfile.
-  gem 'capistrano-passenger', '~> 0.1', require: false
+  gem 'capistrano-passenger', '~> 0.2', require: false
   gem 'listen'
 
   # Access an IRB console on exception pages or by using <%= console %> in views
@@ -59,11 +54,9 @@ group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
   # Adds support for Capybara system testing and selenium driver
-  gem 'capybara', '~> 3.33'
+  gem 'capybara', '~> 3.39.2'
   # For testing with chromedriver
-  gem 'selenium-webdriver', '~> 3.142'
-  # For automatically updating chromedriver
-  gem 'webdrivers', '~> 4.0', require: false
+  gem 'selenium-webdriver', '~> 4.16.0'
   gem 'rspec-rails', '~> 4.0'
   gem 'factory_bot_rails', ' ~> 4.0'
   gem 'simplecov',      require: false
