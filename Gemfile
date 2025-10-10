@@ -2,7 +2,8 @@ source 'https://rubygems.org'
 
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '6.0.4'
+gem 'rails', '~> 6.0.4'
+gem 'concurrent-ruby', '1.3.4' # TODO: this is temporary for updating to rails 6.0.6
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 5.0'
 gem 'sass', '~> 3.7.4'
@@ -33,8 +34,7 @@ gem 'puma'
 gem 'jira-ruby'
 gem 'recaptcha', '~> 4.13'
 
-gem 'nokogiri', '~> 1.10.10'
-gem 'mini_portile2', '~> 2.4.0'
+gem 'nokogiri', '~> 1.18', '>= 1.18.9', force_ruby_platform: true
 
 # Use Capistrano for deployment
 group :development do
@@ -63,6 +63,8 @@ group :development, :test do
   # For testing with chromedriver
   gem 'selenium-webdriver', '~> 3.142'
   # For automatically updating chromedriver
+  gem "matrix", "~> 0.4.3"
+  gem "rexml", "~> 3.4"
   gem 'webdrivers', '~> 4.0', require: false
   gem 'rspec-rails', '~> 4.0'
   gem 'factory_bot_rails', ' ~> 4.0'
