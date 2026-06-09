@@ -41,7 +41,8 @@ set :passenger_restart_with_touch, true
 set :linked_files, fetch(:linked_files, []).push(
   "config/database.yml",
   "config/feedback_config.yml",
-  "config/secrets.yml"
+  "config/secrets.yml", # TODO: Remove once all secrets are moved to credentials
+  "config/credentials/#{fetch(:deploy_name)}.key",
 )
 
 # RVM Setup, for selecting the correct ruby version (instead of capistrano-rvm gem)
