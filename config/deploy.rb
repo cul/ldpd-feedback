@@ -43,6 +43,15 @@ set :linked_files, fetch(:linked_files, []).push(
   "config/secrets.yml"
 )
 
+# RVM Setup, for selecting the correct ruby version (instead of capistrano-rvm gem)
+set :rvm_ruby_version, fetch(:deploy_name) # This RVM alias must exist on the server
+[:rake, :gem, :bundle, :ruby].each do |command_to_prefix|
+  SSHKit.config.command_map.prefix[command_to_prefix].push(
+    # Prefix all ruby-related commands with this string that specifies Ruby version to use
+    "#{fetch(:rvm_custom_path, '~/.rvm')}/bin/rvm #{fetch(:rvm_ruby_version)} do"
+  )
+end
+
 namespace :deploy do
   desc "Report the environment"
   task :report do
