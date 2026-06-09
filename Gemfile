@@ -38,10 +38,9 @@ gem 'nokogiri', '~> 1.18', '>= 1.18.9', force_ruby_platform: true
 
 # Use Capistrano for deployment
 group :development do
-  gem 'capistrano', '~> 3.17.3', require: false
+  gem 'capistrano', '~> 3.19.2', require: false
   gem 'capistrano-rails', '~> 1.4', require: false
-  gem 'capistrano-bundler', '~> 1.1', require: false
-  gem 'capistrano-rvm', '~> 0.1', require: false
+  gem 'capistrano-cul', require: false
   gem 'capistrano-passenger', '~> 0.2', require: false
   gem 'listen'
 
