@@ -1,9 +1,10 @@
 #feedback-form {
   margin: 1.5em 0;
+  background: green;
 
   h1 {
-    font-size:1.5em;
-    margin:0 0 1em;
+    font-size: 1.5em;
+    margin: 0 0 1em;
   }
 
   .submitted-from-page-alert {
@@ -19,19 +20,19 @@
   }
 
   .alert {
-    padding:10px 15px;
+    padding: 10px 15px;
   }
 
   .alert.attached-above {
     border-top-left-radius: 0px;
     border-top-right-radius: 0px;
-    font-size:.95em;
-    padding:5px 10px;
+    font-size: .95em;
+    padding: 5px 10px;
   }
 
   ul {
     padding-left: 0px;
-    list-style:inside;
+    list-style: inside;
   }
 
 }

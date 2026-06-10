@@ -3,11 +3,15 @@ source 'https://rubygems.org'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails', branch: 'main'
 gem 'rails', '~> 8.1.1'
-# Use SCSS for stylesheets
-gem 'sass-rails', '~> 5.0'
-gem 'sass', '~> 3.7.4'
-gem 'sprockets', '~> 3.7.2'
-gem 'sprockets-rails', :require => 'sprockets/railtie'
+
+# The modern asset pipeline for Rails [https://github.com/rails/propshaft]
+gem 'propshaft'
+# Use JavaScript with ESM import maps [https://github.com/rails/importmap-rails]
+gem 'importmap-rails'
+
+gem 'dartsass-rails'
+gem 'bootstrap', '~> 5.3'
+
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', require: false
 
@@ -15,13 +19,7 @@ gem 'bootsnap', require: false
 gem 'mysql2'
 # or use a null adapter for scenarios that really require no database
 gem 'activerecord-nulldb-adapter'
-# Use Uglifier as compressor for JavaScript assets
-gem 'uglifier', '>= 1.3.0'
 
-gem 'bootstrap-sass', '~> 3.3.4'
-
-# Use jquery as the JavaScript library
-gem 'jquery-rails'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'jbuilder', '~> 2.0'
 # bundle exec rake doc:rails generates the API under doc/api.
