@@ -10,26 +10,24 @@
   <h1><%= @feedback_submission.form_config['form_title'] %></h1>
   <% end %>
 
-  <% top_display_errors = @feedback_submission.errors.select {|attribute, message| [:feedback_type, :one_line_summary, :description, :name, :email].exclude?(attribute) } %>
-  <% inline_form_display_errors = @feedback_submission.errors.select {|attribute, message| [:feedback_type, :one_line_summary, :description, :name, :email].include?(attribute) } %>
-
+  <% inline_error_fields = [:feedback_type, :one_line_summary, :description, :name, :email] %>
+  <% top_display_errors = @feedback_submission.errors.reject { |error| inline_error_fields.include?(error.attribute) } %>
+  <% inline_form_display_errors = @feedback_submission.errors.select { |error| inline_error_fields.include?(error.attribute) } %>
 
   <% if params[:submitted_from_page].present? %>
     <div class="alert alert-info submitted-from-page-alert">Submitted from: <%= params[:submitted_from_page] %></div>
   <% end %>
 
   <% if top_display_errors.present? %>
-    <div class="alert alert-danger">
-    <ul>
-      <% top_display_errors.each do |attribute, error| %>
-        <li><%= error %></li>
+    <div class="alert alert-danger small">
+      <% top_display_errors.each do |error| %>
+        <%= error.message %><br />
       <% end %>
-    </ul>
     </div>
   <% end %>
 
   <% if inline_form_display_errors.present? %>
-    <div class="alert alert-danger">
+    <div class="alert alert-danger small">
       Please review your submission for errors.
     </div>
   <% end %>
@@ -38,33 +36,33 @@
   <%= hidden_field_tag 'window_width', params[:window_width] %>
   <%= hidden_field_tag 'window_height', params[:window_height] %>
 
-  <div class="form-group <%= 'has-error' if @feedback_submission.errors.include?(:feedback_type) %>">
+  <div class="mb-3">
     <% if @feedback_submission.form_config['feedback_types'].present? %>
-      <%= select_tag 'feedback_type', options_for_select(@feedback_submission.form_config['feedback_types'], params[:feedback_type]), class: 'form-control input-sm', aria: { label: 'Feedback Type' } %>
+      <%= select_tag 'feedback_type', options_for_select(@feedback_submission.form_config['feedback_types'], params[:feedback_type]), class: "form-select form-select-sm #{'is-invalid' if @feedback_submission.errors.include?(:feedback_type)}", aria: { label: 'Feedback Type' } %>
     <% end %>
     <%= render_error_messages_if_present(@feedback_submission, :feedback_type) %>
   </div>
-  <div class="form-group <%= 'has-error' if @feedback_submission.errors.include?(:one_line_summary) %>">
-    <%= text_field_tag(:one_line_summary, params[:one_line_summary], class: 'form-control input-sm', placeholder: 'One line summary', aria: { label: 'Summary' }) %>
+  <div class="mb-3">
+    <%= text_field_tag(:one_line_summary, params[:one_line_summary], class: "form-control form-control-sm #{'is-invalid' if @feedback_submission.errors.include?(:one_line_summary)}", placeholder: 'One line summary', aria: { label: 'Summary' }) %>
     <%= render_error_messages_if_present(@feedback_submission, :one_line_summary) %>
   </div>
-  <div class="form-group <%= 'has-error' if @feedback_submission.errors.include?(:description) %>">
-    <%= text_area_tag(:description, params[:description], class: 'form-control input-sm', placeholder: 'Description', rows: '3', aria: { label: 'Description'}) %>
+  <div class="mb-3">
+    <%= text_area_tag(:description, params[:description], class: "form-control form-control-sm #{'is-invalid' if @feedback_submission.errors.include?(:description)}", placeholder: 'Description', rows: '3', aria: { label: 'Description'}) %>
     <%= render_error_messages_if_present(@feedback_submission, :description) %>
   </div>
-  <div class="form-group <%= 'has-error' if @feedback_submission.errors.include?(:name) %>">
-    <%= text_field_tag(:name, params[:name], class: 'form-control input-sm', placeholder: 'Name (optional)', aria: { label: 'Name (optional)' }) %>
+  <div class="mb-3">
+    <%= text_field_tag(:name, params[:name], class: "form-control form-control-sm #{'is-invalid' if @feedback_submission.errors.include?(:name)}", placeholder: 'Name (optional)', aria: { label: 'Name (optional)' }) %>
     <%= render_error_messages_if_present(@feedback_submission, :name) %>
   </div>
-  <div class="form-group <%= 'has-error' if @feedback_submission.errors.include?(:email) %>">
-    <%= text_field_tag(:email, params[:email], class: 'form-control input-sm', placeholder: 'Email (optional)', aria: { label: 'Email (optional)'}) %>
+  <div class="mb-3">
+    <%= text_field_tag(:email, params[:email], class: "form-control form-control-sm #{'is-invalid' if @feedback_submission.errors.include?(:email)}", placeholder: 'Email (optional)', aria: { label: 'Email (optional)'}) %>
     <%= render_error_messages_if_present(@feedback_submission, :email) %>
   </div>
 
   <%= recaptcha_tags %>
 
   <div class="actions">
-    <%= submit_tag('Submit', :class => 'btn btn-default btn-sm pull-right') %>
+    <%= submit_tag('Submit', :class => 'btn btn-secondary btn-sm float-end') %>
     <div class="clearfix"></div>
   </div>
 <% end %>
