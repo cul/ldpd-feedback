@@ -20,7 +20,7 @@ describe FeedbackSubmissionsHelper, type: :helper do
         let(:error_field) { :description }
         let(:fragment) { Nokogiri::HTML(message) }
         it 'returns output including an error message' do
-          expect(fragment.at_css(".alert > ul > li").text).to match("A description is required")
+          expect(fragment.at_css(".invalid-feedback > p").text).to match("A description is required")
         end
       end
 

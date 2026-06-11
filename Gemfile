@@ -54,7 +54,7 @@ group :development, :test do
   gem 'capybara', '~> 3.39.2'
   # For testing with chromedriver
   gem 'selenium-webdriver', '~> 4.16.0'
-  gem 'rspec-rails', '~> 7.0'
+  gem 'rspec-rails', '~> 8.0.4'
   gem 'factory_bot_rails', ' ~> 4.0'
   gem 'simplecov',      require: false
   gem 'simplecov-lcov', require: false
