@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 Feedback::Application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
 
@@ -68,10 +70,10 @@ Feedback::Application.configure do
 
   config.action_mailer.delivery_method = :sendmail
   config.action_mailer.sendmail_settings = {
-    :location       => '/usr/sbin/sendmail',
-    :arguments      => '-i -t'
+    location: '/usr/sbin/sendmail',
+    arguments: '-i -t'
   }
-  config.action_mailer.default_url_options = { :host => 'ldpd-nginx-test1.cul.columbia.edu' }
+  config.action_mailer.default_url_options = { host: 'diglib-rails-test1.cul.columbia.edu' }
 
   # Enable locale fallbacks for I18n (makes lookups for any locale fall back to
   # the I18n.default_locale when a translation can not be found).

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # config valid for current version and patch releases of Capistrano
 lock '~> 3.19.2'
 
@@ -13,9 +15,9 @@ set :rails_env, fetch(:deploy_name)
 set :rvm_custom_path, '~/.rvm-alma8'
 set :rvm_ruby_version, fetch(:deploy_name)
 
-set :repo_url,  "git@github.com:cul/#{fetch(:repo_name)}.git"
+set :repo_url, "git@github.com:cul/#{fetch(:repo_name)}.git"
 
-set :remote_user, "renserv"
+set :remote_user, 'renserv'
 # Default deploy_to directory is /var/www/:application
 # set :deploy_to, '/var/www/my_app_name'
 set :deploy_to,   "/opt/passenger/#{fetch(:deploy_name)}"
@@ -39,10 +41,10 @@ set :keep_releases, 3
 set :passenger_restart_with_touch, true
 
 set :linked_files, fetch(:linked_files, []).push(
-  "config/database.yml",
-  "config/feedback_config.yml",
-  "config/secrets.yml", # TODO: Remove once all secrets are moved to credentials
-  "config/credentials/#{fetch(:deploy_name)}.key",
+  'config/database.yml',
+  'config/feedback_config.yml',
+  'config/secrets.yml', # TODO: Remove once all secrets are moved to credentials
+  "config/credentials/#{fetch(:deploy_name)}.key"
 )
 
 # RVM Setup, for selecting the correct ruby version (instead of capistrano-rvm gem)
@@ -55,17 +57,17 @@ set :rvm_ruby_version, fetch(:deploy_name) # This RVM alias must exist on the se
 end
 
 namespace :deploy do
-  desc "Report the environment"
+  desc 'Report the environment'
   task :report do
     run_locally do
-      puts "cap called with stage = \"#{fetch(:stage,'none')}\""
-      puts "cap would deploy to = \"#{fetch(:deploy_to,'none')}\""
+      puts "cap called with stage = \"#{fetch(:stage, 'none')}\""
+      puts "cap would deploy to = \"#{fetch(:deploy_to, 'none')}\""
       puts "cap would install from #{fetch(:repo_url)}"
       puts "cap would install in Rails env #{fetch(:rails_env)}"
     end
   end
 
-  desc "Add tag based on current version from VERSION file"
+  desc 'Add tag based on current version from VERSION file'
   task :auto_tag do
     current_version = "v#{IO.read('VERSION').strip}"
 

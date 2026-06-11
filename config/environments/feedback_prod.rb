@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 Feedback::Application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
 
@@ -66,12 +68,15 @@ Feedback::Application.configure do
   # Set this to true and configure the email server for immediate delivery to raise delivery errors.
   # config.action_mailer.raise_delivery_errors = false
 
-  config.action_mailer.delivery_method = :sendmail
-  config.action_mailer.sendmail_settings = {
-    :location       => '/usr/sbin/sendmail',
-    :arguments      => '-i -t'
-  }
-  config.action_mailer.default_url_options = { :host => 'ldpd-nginx-prod1.cul.columbia.edu' }
+  # TODO: Enable when ready
+  # config.action_mailer.delivery_method = :sendmail
+  # config.action_mailer.sendmail_settings = {
+  #   location: '/usr/sbin/sendmail',
+  #   arguments: '-i -t'
+  # }
+
+  # TODO: Enable when ready
+  # config.action_mailer.default_url_options = { host: 'diglib-rails-prod1.cul.columbia.edu' }
 
   # Enable locale fallbacks for I18n (makes lookups for any locale fall back to
   # the I18n.default_locale when a translation can not be found).

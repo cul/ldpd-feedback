@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # default requires
 require 'capistrano/setup'
 require 'capistrano/deploy'

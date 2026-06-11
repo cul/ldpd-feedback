@@ -59,4 +59,7 @@ group :development, :test do
   gem 'simplecov',      require: false
   gem 'simplecov-lcov', require: false
   gem 'pry'
+
+  # rubocop + CUL presets
+  gem 'rubocul', '~> 4.0.11'
 end

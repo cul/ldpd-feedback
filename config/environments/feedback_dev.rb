@@ -1,4 +1,6 @@
-require "active_support/core_ext/integer/time"
+# frozen_string_literal: true
+
+require 'active_support/core_ext/integer/time'
 
 Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
@@ -29,10 +31,10 @@ Rails.application.configure do
   # Email is delivered via the local sendmail binary on the server.
   config.action_mailer.delivery_method = :sendmail
   config.action_mailer.sendmail_settings = {
-    :location       => '/usr/sbin/sendmail',
-    :arguments      => '-i -t'
+    location: '/usr/sbin/sendmail',
+    arguments: '-i -t'
   }
-  config.action_mailer.default_url_options = { :host => 'feedback-dev.library.columbia.edu' }
+  config.action_mailer.default_url_options = { host: 'feedback-dev.library.columbia.edu' }
 
   # Fall back to the default locale when a translation is missing.
   config.i18n.fallbacks = true
