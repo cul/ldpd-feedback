@@ -55,7 +55,10 @@ namespace :feedback do
     key_path = Rails.root.join('config/credentials', "#{rails_env}.key")
 
     FileUtils.mkdir_p(enc_path.dirname)
-    ENV['RAILS_MASTER_KEY'] = SecureRandom.hex(16)
+    key = ActiveSupport::EncryptedFile.generate_key
+    File.write(key_path, key)
+    ENV['RAILS_MASTER_KEY'] = key
+
     File.delete(enc_path) if File.exist?(enc_path)
 
     ActiveSupport::EncryptedConfiguration.new(
@@ -66,8 +69,5 @@ namespace :feedback do
     ).write(ERB.new(File.read(template_path)).result(binding))
 
     puts "[credentials_files] enc exists? #{File.exist?(enc_path)}"
-    test_config = config.config
-    puts "[credentials_files] top-level keys: #{test_config.keys.inspect}"
-    puts "[credentials_files] recaptcha present? #{test_config.key?(:recaptcha)}"
   end
 end
