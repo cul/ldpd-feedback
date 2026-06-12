@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class MyMailer < ApplicationMailer
+class ApplicationMailer < ActionMailer::Base
   def send_mail(m_to, m_from, m_subject, m_body)
     mail(
       to: m_to,

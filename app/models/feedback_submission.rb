@@ -112,7 +112,7 @@ class FeedbackSubmission
                    'Description: ' + self.description + "\n\n" +
                    environment_message
 
-    MyMailer.send_mail(mail_to, mail_from, mail_subject, mail_message).deliver
+    ApplicationMailer.send_mail(mail_to, mail_from, mail_subject, mail_message).deliver
   end
 
   private

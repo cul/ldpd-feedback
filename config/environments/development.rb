@@ -45,12 +45,10 @@ Rails.application.configure do
   # Set localhost to be used by links generated in mailer templates.
   config.action_mailer.default_url_options = { host: 'localhost', port: 3000 }
 
-  # Specify outgoing SMTP server.
-  config.action_mailer.delivery_method = :smtp
-  config.action_mailer.smtp_settings = {
-    address: 'smtp.library.columbia.edu',
-    domain: 'smtp.library.columbia.edu',
-    port: 25
+  config.action_mailer.delivery_method = :sendmail
+  config.action_mailer.sendmail_settings = {
+    location: '/usr/sbin/sendmail',
+    arguments: '-i -t'
   }
 
   # Print deprecation notices to the Rails logger.
@@ -61,9 +59,6 @@ Rails.application.configure do
 
   # Highlight code that triggered database queries in logs.
   config.active_record.verbose_query_logs = true
-
-  # Append comments with runtime information tags to SQL queries in logs.
-  config.active_record.query_log_tags_enabled = true
 
   # Highlight code that enqueued background job in logs.
   config.active_job.verbose_enqueue_logs = true
@@ -85,4 +80,8 @@ Rails.application.configure do
 
   # Raise error when a before_action's only/except options reference missing actions.
   config.action_controller.raise_on_missing_callback_actions = true
+
+  # Use an evented file watcher to asynchronously detect changes in source code,
+  # routes, locales, etc. This feature depends on the listen gem.
+  config.file_watcher = ActiveSupport::EventedFileUpdateChecker
 end
