@@ -26,8 +26,6 @@ namespace :feedback do
   task :config_files do
     # yml templates
     Dir.glob(Rails.root.join('config/templates/*.template.yml').to_s).each do |template_yml_path|
-      next if File.basename(template_yml_path) == 'credentials.template.yml.erb'
-
       target_yml_path = Rails.root.join('config', File.basename(template_yml_path).sub('.template.yml', '.yml')).to_s
       FileUtils.touch(target_yml_path) # Create if it doesn't exist
       target_yml = YAML.load_file(target_yml_path, aliases: true) || YAML.load_file(template_yml_path, aliases: true)
@@ -35,6 +33,8 @@ namespace :feedback do
     end
 
     Dir.glob(Rails.root.join('config/templates/*.template.yml.erb').to_s).each do |template_yml_path|
+      next if File.basename(template_yml_path) == 'credentials.template.yml.erb'
+
       target_yml_path = Rails.root.join('config',
                                         File.basename(template_yml_path).sub('.template.yml.erb', '.yml')).to_s
       FileUtils.touch(target_yml_path) # Create if it doesn't exist
@@ -64,5 +64,10 @@ namespace :feedback do
       env_key: 'RAILS_MASTER_KEY',
       raise_if_missing_key: true
     ).write(ERB.new(File.read(template_path)).result(binding))
+
+    puts "[credentials_files] enc exists? #{File.exist?(enc_path)}"
+    test_config = config.config
+    puts "[credentials_files] top-level keys: #{test_config.keys.inspect}"
+    puts "[credentials_files] recaptcha present? #{test_config.key?(:recaptcha)}"
   end
 end
