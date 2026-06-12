@@ -20,8 +20,13 @@ namespace :feedback do
   end
 
   desc 'CI build'
-  task ci: [:'feedback:config_files', :'feedback:credentials_files', :environment, :'feedback:rspec']
+  task ci: [:'feedback:config_files', :'feedback:credentials_files', :environment, 'css:build', :'feedback:rspec']
   # NOTE: Don't include Rails environment for this task, since enviroment includes a check for the presence of database.yml
+
+  desc 'Compile SCSS so Propshaft can serve application.css'
+  task 'css:build' => :environment do
+    Rake::Task['dartsass:build'].invoke
+  end
 
   task :config_files do
     # yml templates
