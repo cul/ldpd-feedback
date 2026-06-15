@@ -55,7 +55,7 @@ group :development, :test do
   # For testing with chromedriver
   gem 'selenium-webdriver', '~> 4.16.0'
   gem 'rspec-rails', '~> 8.0.4'
-  gem 'factory_bot_rails', ' ~> 4.0'
+  gem 'factory_bot_rails', '~> 6.4'
   gem 'simplecov',      require: false
   gem 'simplecov-lcov', require: false
   gem 'pry'
