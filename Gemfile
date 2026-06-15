@@ -39,6 +39,7 @@ group :development do
   gem 'capistrano-rails', '~> 1.4', require: false
   gem 'capistrano-cul', require: false
   gem 'capistrano-passenger', '~> 0.2', require: false
+  gem 'capistrano-bundler', '~> 2.1', require: false
   gem 'listen'
 
   # Access an IRB console on exception pages or by using <%= console %> in views
