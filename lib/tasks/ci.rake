@@ -20,7 +20,7 @@ namespace :feedback do
   end
 
   desc 'CI build'
-  task ci: [:'feedback:config_files', :'feedback:credentials_files', :environment, 'css:build', :'feedback:rspec']
+  task ci: [:'feedback:config_files', :'feedback:credentials_files', :environment, 'css:build', :'feedback:rspec', :'feedback:rubocop']
   # NOTE: Don't include Rails environment for this task, since enviroment includes a check for the presence of database.yml
 
   desc 'Compile SCSS so Propshaft can serve application.css'
@@ -72,7 +72,12 @@ namespace :feedback do
       env_key: 'RAILS_MASTER_KEY',
       raise_if_missing_key: true
     ).write(ERB.new(File.read(template_path)).result(binding))
+  end
 
-    puts "[credentials_files] enc exists? #{File.exist?(enc_path)}"
+  require 'rubocop/rake_task'
+  desc 'Run Rubocop style checker'
+  RuboCop::RakeTask.new(:rubocop) do |task|
+    task.requires << 'rubocop-rspec'
+    task.fail_on_error = true
   end
 end

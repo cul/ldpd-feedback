@@ -12,6 +12,10 @@ gem 'importmap-rails'
 gem 'dartsass-rails'
 gem 'bootstrap', '~> 5.3'
 
+# Required for rubocop to work properly with Ruby 4.x
+# Updating rubocul so it uses rubocop stack compatible with Ruby 4.x is ticketed in DLST-522
+gem 'benchmark', require: false
+
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', require: false
 
