@@ -74,10 +74,15 @@ namespace :feedback do
     ).write(ERB.new(File.read(template_path)).result(binding))
   end
 
-  require 'rubocop/rake_task'
-  desc 'Run Rubocop style checker'
-  RuboCop::RakeTask.new(:rubocop) do |task|
-    task.requires << 'rubocop-rspec'
-    task.fail_on_error = true
+  begin
+    require 'rubocop/rake_task'
+    desc 'Run Rubocop style checker'
+    RuboCop::RakeTask.new(:rubocop) do |task|
+      task.requires << 'rubocop-rspec'
+      task.fail_on_error = true
+    end
+  rescue LoadError => e
+    puts '[Warning] Exception creating rubocop rake task. This message can be ignored in environments that intentionally do not pull in the RuboCop gem (i.e. production).'
+    puts e
   end
 end
