@@ -3,4 +3,8 @@
 // Entry point for the application's JavaScript, loaded by
 // `javascript_importmap_tags` in the layout
 
-import "feedback_submissions";
+// Include your files here, for example:
+// import "feedback_submissions";
+
+// and then pin them in config/importmap.rb, for example:
+// pin "feedback_submissions"
