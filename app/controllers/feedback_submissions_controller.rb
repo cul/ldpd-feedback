@@ -1,8 +1,14 @@
 # frozen_string_literal: true
 
+require 'net/http'
+require 'uri'
+require 'json'
+
 class FeedbackSubmissionsController < ApplicationController
   before_action :set_feedback_submission, only: [:new, :create, :success]
   after_action :allow_iframe, only: [:new, :create, :success] # Allow these actions to be loaded in an iframe
+
+  HCAPTCHA_VERIFY_URL = 'https://api.hcaptcha.com/siteverify'
 
   # GET /feedback_submissions
   # GET /feedback_submissions.json
@@ -17,7 +23,7 @@ class FeedbackSubmissionsController < ApplicationController
     @feedback_submission.update(feedback_submission_params.merge('user_agent' => request.user_agent))
 
     respond_to do |format|
-      if verify_recaptcha(model: @feedback_submission) && @feedback_submission.submit
+      if verify_hcaptcha && @feedback_submission.submit
         format.html do
           redirect_to success_feedback_submission_path(@feedback_submission.feedback_key),
                       notice: 'Feedback submission was successfully created.'
@@ -45,6 +51,39 @@ class FeedbackSubmissionsController < ApplicationController
   def feedback_submission_params
     params.permit(:feedback_type, :one_line_summary, :description, :name, :email, :submitted_from_page, :window_width,
                   :window_height)
+  end
+
+  def verify_hcaptcha
+    token = params['h-captcha-response']
+
+    puts "hCaptcha token received: #{token}"
+    if token.blank?
+      @feedback_submission.errors.add(:base, 'Captcha verification is required.')
+      return false
+    end
+
+    # Sends a POST request with application/x-www-form-urlencoded Content-Type expected by hCaptcha
+    response = Net::HTTP.post_form(
+      URI(HCAPTCHA_VERIFY_URL),
+      'secret' => Hcaptcha::SECRET_KEY,
+      'response' => token,
+      'remoteip' => request.remote_ip,
+      'sitekey' => Hcaptcha::SITE_KEY
+    )
+
+    result = JSON.parse(response.body)
+    puts "hCaptcha verification response: #{result}"
+
+    unless result['success']
+      puts "hCaptcha verification failed: #{result['error-codes']}"
+      @feedback_submission.errors.add(:base, 'Captcha verification failed. Please try again.')
+    end
+
+    result['success']
+  rescue StandardError => e
+    puts "hCaptcha verification error: #{e.message}"
+    @feedback_submission.errors.add(:base, 'Unable to verify captcha. Please try again.')
+    false
   end
 
   def allow_iframe
