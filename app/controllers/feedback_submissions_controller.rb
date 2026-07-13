@@ -56,7 +56,6 @@ class FeedbackSubmissionsController < ApplicationController
   def verify_hcaptcha
     token = params['h-captcha-response']
 
-    puts "hCaptcha token received: #{token}"
     if token.blank?
       @feedback_submission.errors.add(:base, 'Captcha verification is required.')
       return false
@@ -72,16 +71,15 @@ class FeedbackSubmissionsController < ApplicationController
     )
 
     result = JSON.parse(response.body)
-    puts "hCaptcha verification response: #{result}"
 
     unless result['success']
-      puts "hCaptcha verification failed: #{result['error-codes']}"
+      Rails.logger.error("hCaptcha verification failed: #{result['error-codes']}")
       @feedback_submission.errors.add(:base, 'Captcha verification failed. Please try again.')
     end
 
     result['success']
   rescue StandardError => e
-    puts "hCaptcha verification error: #{e.message}"
+    Rails.logger.error("hCaptcha verification error: #{e.message}")
     @feedback_submission.errors.add(:base, 'Unable to verify captcha. Please try again.')
     false
   end
