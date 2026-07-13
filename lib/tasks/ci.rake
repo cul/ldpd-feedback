@@ -1,6 +1,6 @@
+# frozen_string_literal: true
 
 namespace :feedback do
-
   begin
     require 'rspec/core/rake_task'
     RSpec::Core::RakeTask.new(:rspec) do |spec|
@@ -14,27 +14,75 @@ namespace :feedback do
       spec.pattern += FileList['spec/*_spec.rb']
       spec.rcov = true
     end
-
   rescue LoadError => e
-    puts "[Warning] Exception creating rspec rake tasks.  This message can be ignored in environments that intentionally do not pull in the RSpec gem (i.e. production)."
+    puts '[Warning] Exception creating rspec rake tasks.  This message can be ignored in environments that intentionally do not pull in the RSpec gem (i.e. production).'
     puts e
   end
-  desc "CI build"
-  task ci: [:'feedback:config_files', :environment, :'feedback:rspec']
-    # Note: Don't include Rails environment for this task, since enviroment includes a check for the presence of database.yml
+
+  desc 'CI build'
+  task ci: [:'feedback:config_files', :'feedback:credentials_files', :environment, 'css:build', :'feedback:rspec', :'feedback:rubocop']
+  # NOTE: Don't include Rails environment for this task, since enviroment includes a check for the presence of database.yml
+
+  desc 'Compile SCSS so Propshaft can serve application.css'
+  task 'css:build' => :environment do
+    Rake::Task['dartsass:build'].invoke
+  end
+
   task :config_files do
     # yml templates
-    Dir.glob(File.join(Rails.root, "config/templates/*.template.yml")).each do |template_yml_path|
-      target_yml_path = File.join(Rails.root, 'config', File.basename(template_yml_path).sub(".template.yml", ".yml"))
+    Dir.glob(Rails.root.join('config/templates/*.template.yml').to_s).each do |template_yml_path|
+      target_yml_path = Rails.root.join('config', File.basename(template_yml_path).sub('.template.yml', '.yml')).to_s
       FileUtils.touch(target_yml_path) # Create if it doesn't exist
       target_yml = YAML.load_file(target_yml_path, aliases: true) || YAML.load_file(template_yml_path, aliases: true)
-      File.open(target_yml_path, 'w') {|f| f.write target_yml.to_yaml }
+      File.open(target_yml_path, 'w') { |f| f.write target_yml.to_yaml }
     end
-    Dir.glob(File.join(Rails.root, "config/templates/*.template.yml.erb")).each do |template_yml_path|
-      target_yml_path = File.join(Rails.root, 'config', File.basename(template_yml_path).sub(".template.yml.erb", ".yml"))
+
+    Dir.glob(Rails.root.join('config/templates/*.template.yml.erb').to_s).each do |template_yml_path|
+      next if File.basename(template_yml_path) == 'credentials.template.yml.erb'
+
+      target_yml_path = Rails.root.join('config',
+                                        File.basename(template_yml_path).sub('.template.yml.erb', '.yml')).to_s
       FileUtils.touch(target_yml_path) # Create if it doesn't exist
-      target_yml = YAML.load_file(target_yml_path, aliases: true) || YAML.load(ERB.new(File.read(template_yml_path)).result(binding), aliases: true)
-      File.open(target_yml_path, 'w') {|f| f.write target_yml.to_yaml }
+      target_yml = YAML.load_file(target_yml_path,
+                                  aliases: true) || YAML.load(ERB.new(File.read(template_yml_path)).result(binding),
+                                                              aliases: true)
+      File.open(target_yml_path, 'w') { |f| f.write target_yml.to_yaml }
     end
+  end
+
+  desc 'Generate encrypted credentials from a template'
+  task :credentials_files do
+    require 'active_support/encrypted_configuration'
+
+    rails_env = ENV.fetch('RAILS_ENV', 'test')
+    template_path = Rails.root.join('config/templates/credentials.template.yml.erb')
+    enc_path = Rails.root.join('config/credentials', "#{rails_env}.yml.enc")
+    key_path = Rails.root.join('config/credentials', "#{rails_env}.key")
+
+    FileUtils.mkdir_p(enc_path.dirname)
+    key = ActiveSupport::EncryptedFile.generate_key
+    File.write(key_path, key)
+    ENV['RAILS_MASTER_KEY'] = key
+
+    File.delete(enc_path) if File.exist?(enc_path)
+
+    ActiveSupport::EncryptedConfiguration.new(
+      config_path: enc_path,
+      key_path: key_path,
+      env_key: 'RAILS_MASTER_KEY',
+      raise_if_missing_key: true
+    ).write(ERB.new(File.read(template_path)).result(binding))
+  end
+
+  begin
+    require 'rubocop/rake_task'
+    desc 'Run Rubocop style checker'
+    RuboCop::RakeTask.new(:rubocop) do |task|
+      task.requires << 'rubocop-rspec'
+      task.fail_on_error = true
+    end
+  rescue LoadError => e
+    puts '[Warning] Exception creating rubocop rake task. This message can be ignored in environments that intentionally do not pull in the RuboCop gem (i.e. production).'
+    puts e
   end
 end

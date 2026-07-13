@@ -1,4 +1,7 @@
-lock '3.5.0'
+# frozen_string_literal: true
+
+# config valid for current version and patch releases of Capistrano
+lock '~> 3.19.2'
 
 set :department, 'ldpd'
 set :instance, fetch(:department)
@@ -9,14 +12,15 @@ set :deploy_name, "#{fetch(:application)}_#{fetch(:stage)}"
 # Default value for :rails_env is fetch(:stage)
 set :rails_env, fetch(:deploy_name)
 # use the rvm wrapper
+set :rvm_custom_path, '~/.rvm-alma8'
 set :rvm_ruby_version, fetch(:deploy_name)
 
-set :repo_url,  "git@github.com:cul/#{fetch(:repo_name)}.git"
+set :repo_url, "git@github.com:cul/#{fetch(:repo_name)}.git"
 
-set :remote_user, "#{fetch(:instance)}serv"
+set :remote_user, 'renserv'
 # Default deploy_to directory is /var/www/:application
 # set :deploy_to, '/var/www/my_app_name'
-set :deploy_to,   "/opt/passenger/#{fetch(:instance)}/#{fetch(:deploy_name)}"
+set :deploy_to,   "/opt/passenger/#{fetch(:deploy_name)}"
 
 # Default value for :scm is :git
 # set :scm, :git
@@ -37,23 +41,33 @@ set :keep_releases, 3
 set :passenger_restart_with_touch, true
 
 set :linked_files, fetch(:linked_files, []).push(
-  "config/database.yml",
-  "config/feedback_config.yml",
-  "config/secrets.yml"
+  'config/database.yml',
+  'config/feedback_config.yml',
+  'config/secrets.yml', # TODO: Remove once all secrets are moved to credentials
+  "config/credentials/#{fetch(:deploy_name)}.key"
 )
 
+# RVM Setup, for selecting the correct ruby version (instead of capistrano-rvm gem)
+set :rvm_ruby_version, fetch(:deploy_name) # This RVM alias must exist on the server
+[:rake, :gem, :bundle, :ruby].each do |command_to_prefix|
+  SSHKit.config.command_map.prefix[command_to_prefix].push(
+    # Prefix all ruby-related commands with this string that specifies Ruby version to use
+    "#{fetch(:rvm_custom_path, '~/.rvm')}/bin/rvm #{fetch(:rvm_ruby_version)} do"
+  )
+end
+
 namespace :deploy do
-  desc "Report the environment"
+  desc 'Report the environment'
   task :report do
     run_locally do
-      puts "cap called with stage = \"#{fetch(:stage,'none')}\""
-      puts "cap would deploy to = \"#{fetch(:deploy_to,'none')}\""
+      puts "cap called with stage = \"#{fetch(:stage, 'none')}\""
+      puts "cap would deploy to = \"#{fetch(:deploy_to, 'none')}\""
       puts "cap would install from #{fetch(:repo_url)}"
       puts "cap would install in Rails env #{fetch(:rails_env)}"
     end
   end
 
-  desc "Add tag based on current version from VERSION file"
+  desc 'Add tag based on current version from VERSION file'
   task :auto_tag do
     current_version = "v#{IO.read('VERSION').strip}"
 
