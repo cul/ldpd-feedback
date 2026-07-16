@@ -33,7 +33,6 @@ gem 'sdoc', '~> 2.0', group: :doc
 gem 'puma'
 
 gem 'jira-ruby'
-gem 'recaptcha', '~> 4.13'
 
 gem 'nokogiri', '~> 1.18', '>= 1.18.9', force_ruby_platform: true
 

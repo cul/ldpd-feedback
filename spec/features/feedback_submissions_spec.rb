@@ -13,8 +13,10 @@ describe "FeedbackSubmissions", type: :feature do
     end
   end
 
-  describe 'feedback form' do
+  describe 'feedback form with passing hCaptcha' do
     before do
+      allow_any_instance_of(FeedbackSubmissionsController)
+        .to receive(:verify_hcaptcha).and_return(true)
       visit new_feedback_submission_path(id: template_submission.feedback_key)
     end
 
@@ -27,7 +29,7 @@ describe "FeedbackSubmissions", type: :feature do
       fill_in 'Summary', with: template_submission.one_line_summary
       fill_in 'Description', with: template_submission.description
       click_on('Submit')
-      expect(page).to have_css("h1", text: 'Thank you')      
+      expect(page).to have_css("h1", text: 'Thank you')
     end
 
     it 'displays error messages when submission is invalid' do

@@ -5,6 +5,8 @@
   }
 </style>
 
+<script src="https://js.hcaptcha.com/1/api.js" async defer></script>
+
 <%= form_tag({controller: 'feedback_submissions', action: 'create', id: @feedback_submission.feedback_key}, method: 'post', id: 'feedback-form') do %>
   <% if @feedback_submission.form_config['form_title'].present? %>
   <h1><%= @feedback_submission.form_config['form_title'] %></h1>
@@ -59,7 +61,7 @@
     <%= render_error_messages_if_present(@feedback_submission, :email) %>
   </div>
 
-  <%= recaptcha_tags %>
+  <div class="h-captcha" data-sitekey="<%= Hcaptcha::SITE_KEY %>"></div>
 
   <div class="actions">
     <%= submit_tag('Submit', :class => 'btn btn-secondary btn-sm float-end') %>
